@@ -18,8 +18,8 @@ public class FluxAndMonoController {
     }
 
     @GetMapping("/mono")
-    public Mono<LocalDateTime> mono() {
-        return Mono.just(LocalDateTime.now()).log();
+    public Mono<String> mono() {
+        return Mono.just("Java").log();
     }
 
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
