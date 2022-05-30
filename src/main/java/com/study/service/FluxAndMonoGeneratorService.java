@@ -6,7 +6,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class FluxAndMonoGeneratorService {
@@ -37,26 +36,24 @@ public class FluxAndMonoGeneratorService {
         return Mono.just("Joao Carlos").log();
     }
 
-    public Flux<String> namesUppercase() {
-        return Flux.fromIterable(List.of("alan", "bento", "carlao"));
+    public Flux<String> namesUppercaseUsingMap(final Flux<String> names) {
+        return null;
     }
 
-    public Flux<String> namesUppercaseHigherThanFour() {
-        return Flux.fromIterable(List.of("alan", "bento", "carlao"));
+    public Flux<String> namesHigherThanFourUsingFilter(final Flux<String> names) {
+        return null;
     }
 
-    public Flux<String> namesFlatMap() {
-        return Flux.fromIterable(List.of("alan", "bento"))
-                .flatMap(s -> splitString(s))
-                .log();
+    public Flux<String> namesFlatMap(final Flux<String> names) {
+        return null;
     }
 
     private Flux<String> splitString(String s) {
         return Flux.fromArray(s.split(""));
     }
 
-    public Flux<String> namesFlatMapAssync() {
-        return Flux.fromIterable(List.of("alan", "bento"))
+    public Flux<String> namesFlatMapAssync(final Flux<String> names) {
+        return names
                 .flatMap(s -> splitStringWithDelay(s))
                 .log();
     }
@@ -66,130 +63,78 @@ public class FluxAndMonoGeneratorService {
         return Flux.fromArray(s.split("")).delayElements(Duration.ofMillis(delay));
     }
 
-    public Flux<String> concatMap() {
-        return Flux.fromIterable(List.of("alan", "bento"))
-                .concatMap(s -> splitStringWithDelay(s))
-                .log();
+    public Flux<String> concatMap(final Flux<String> names) {
+        return null;
     }
 
-    public Mono<List<String>> flatMapWithMono() {
-        return Mono.just("java")
-                .map(s -> s.toUpperCase())
-                .flatMap(s -> splitStringMono(s));
+    public Mono<List<String>> flatMapWithMono(Mono<String> input) {
+        return null;
     }
 
     private Mono<List<String>> splitStringMono(String s) {
         return Mono.just(List.of(s.split("")));
     }
 
-    public Flux<String> flatMapMany() {
-        return Mono.just("java")
-                .map(s -> s.toUpperCase())
-                .flatMapMany(s -> splitString(s));
+    public Flux<String> flatMapMany(Mono<String> input) {
+        return null;
     }
 
-    public Flux<String> transform() {
-        Function<Flux<String>, Flux<String>> transformation =
-                flux -> flux.map(s -> s.toUpperCase()).filter(s -> s.startsWith("A"));
-
-        return Flux.fromIterable(List.of("alan", "bento"))
-                .transform(transformation)
-                .flatMap(s -> splitString(s))
-                .log();
+    public Flux<String> transform(Flux<String> input) {
+        return null;
     }
 
-    public Flux<String> ifEmpty() {
-        return Flux.fromIterable(List.of("alan", "bento"))
-                .filter(s -> s.length() > 6)
-                .defaultIfEmpty("default value")
-                .log();
+    public Flux<String> defaultIfEmpty(Flux<String> input) {
+        return null;
     }
 
-    public Flux<String> switchIfEmpty() {
+    public Flux<String> switchIfEmpty(Flux<String> input) {
 
-        Flux<String> fluxDefault = Flux.just("Alan", "Bento");
-
-        return Flux.fromIterable(List.of("alan", "bento"))
-                .filter(s -> s.length() > 6)
-                .switchIfEmpty(fluxDefault)
-                .log();
+        return null;
     }
 
-    public Flux<String> concat() {
+    public Flux<String> concat(Flux<String> inputOneFlux, Flux<String> inputTwoFlux) {
 
-        var abcFlux = Flux.just("A", "B", "C");
-        var defFlux = Flux.just("D", "E", "F");
-
-        return Flux.concat(abcFlux, defFlux).log();
+        return null;
     }
 
-    public Flux<String> concatWith() {
+    public Flux<String> concatWith(Flux<String> aMono, Flux<String> bMono) {
 
-        var aMono = Flux.just("A");
-        var bMono = Flux.just("B");
-
-        return aMono.concatWith(bMono).log();
+        return null;
     }
 
-    public Flux<String> merge() {
+    public Flux<String> merge(Flux<String> abcFlux, Flux<String> defFlux) {
 
-        var abcFlux = Flux.just("A", "B", "C").delayElements(Duration.ofMillis(100));
-        var defFlux = Flux.just("D", "E", "F").delayElements(Duration.ofMillis(125));
-
-        return Flux.merge(abcFlux, defFlux).log();
+        return null;
     }
 
-    public Flux<String> mergeWith() {
+    public Flux<String> mergeWith(Mono<String> aMono, Mono<String> bMono) {
 
-        var aMono = Mono.just("A");
-        var bMono = Mono.just("B");
-
-        return aMono.mergeWith(bMono).log();
+        return null;
     }
 
-    public Flux<String> mergeSequential() {
+    public Flux<String> mergeSequential(Flux<String> abcFlux, Flux<String> defFlux) {
 
-        var abcFlux = Flux.just("A", "B", "C").delayElements(Duration.ofMillis(100));
-        var defFlux = Flux.just("D", "E", "F").delayElements(Duration.ofMillis(125));
-
-        return Flux.mergeSequential(abcFlux, defFlux).log();
+        return null;
     }
 
-    public Flux<String> zip() {
+    public Flux<String> zip(Flux<String> abcFlux, Flux<String> defFlux) {
 
-        var abcFlux = Flux.just("A", "B", "C");
-        var defFlux = Flux.just("D", "E", "F");
-
-        return Flux.zip(abcFlux, defFlux, (a, b) -> a + b).log();
+        return null;
     }
 
-    public Flux<String> otherZip() {
+    public Flux<String> usingZipAgain(Flux<String> abcFlux, Flux<String> defFlux, Flux<String> _123Flux,
+                                      Flux<String> _456Flux) {
 
-        var abcFlux = Flux.just("A", "B", "C");
-        var defFlux = Flux.just("D", "E", "F");
-
-        var _123Flux = Flux.just("1", "2", "3");
-        var _456Flux = Flux.just("4", "5", "6");
-
-        return Flux.zip(abcFlux, defFlux, _123Flux, _456Flux)
-                .map(tuple -> tuple.getT1() + tuple.getT2() + tuple.getT3() + tuple.getT4())
-                .log();
+        return null;
     }
 
-    public Flux<String> zipWith() {
-
-        var abcFlux = Flux.just("A", "B", "C");
-        var defFlux = Flux.just("D", "E", "F");
-
-        return abcFlux.zipWith(defFlux, (a, b) -> a + b).log();
+    public Flux<String> zipWith(Flux<String> abcFlux, Flux<String> defFlux) {
+        return null;
     }
 
-    public Mono<String> zipWithMono() {
+    public Mono<String> zipWithMono(Mono<String> aMono, Mono<String> bMono) {
 
-        var aMono = Mono.just("A");
-        var bMono = Mono.just("B");
-
-        return aMono.zipWith(bMono).map(tuple -> tuple.getT1() + tuple.getT2()).log();
+        return null;
     }
 
     public static void main(String[] args) {

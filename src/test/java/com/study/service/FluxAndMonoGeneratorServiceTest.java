@@ -1,8 +1,11 @@
 package com.study.service;
 
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.List;
 
 class FluxAndMonoGeneratorServiceTest {
@@ -57,6 +60,20 @@ class FluxAndMonoGeneratorServiceTest {
     }
 
     @Test
+    void namesHigherThanFourUsingFilter() {
+        //given
+        var input = Flux.fromIterable(List.of("alan", "bento", "carlao"));
+        //when
+        var flux = service.namesHigherThanFourUsingFilter(input);
+
+        //then
+        StepVerifier
+                .create(flux)
+                .expectNext("bento", "carlao")
+                .verifyComplete();
+    }
+
+    @Test
     void namesFluxMixed() {
         //given
 
@@ -72,11 +89,11 @@ class FluxAndMonoGeneratorServiceTest {
     }
 
     @Test
-    void namesUppercase() {
+    void namesUppercaseUsingMap() {
         //given
-
+        var input = Flux.fromIterable(List.of("alan", "bento", "carlao"));
         //when
-        var flux = service.namesUppercase();
+        var flux = service.namesUppercaseUsingMap(input);
 
         //then
         StepVerifier
@@ -86,24 +103,12 @@ class FluxAndMonoGeneratorServiceTest {
     }
 
     @Test
-    void namesUppercaseHigherThanFour() {
-        //given
-
-        //when
-        var flux = service.namesUppercaseHigherThanFour();
-
-        //then
-        StepVerifier
-                .create(flux)
-                .expectNext("BENTO", "CARLAO")
-                .verifyComplete();
-    }
-
-    @Test
     void namesFlatMap() {
         //given
+        var input = Flux.fromIterable(List.of("alan", "bento"));
+
         //when
-        var flux = service.namesFlatMap();
+        var flux = service.namesFlatMap(input);
 
         //then
         StepVerifier
@@ -115,8 +120,10 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void namesFlatMapWithDelay() {
         //given
+        var input = Flux.fromIterable(List.of("alan", "bento"));
+
         //when
-        var flux = service.namesFlatMapAssync();
+        var flux = service.namesFlatMapAssync(input);
 
         //then
         StepVerifier
@@ -128,8 +135,10 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void concatMap() {
         //given
+        var input = Flux.fromIterable(List.of("alan", "bento"));
+
         //when
-        var flux = service.concatMap();
+        var flux = service.concatMap(input);
 
         //then
         StepVerifier
@@ -142,8 +151,10 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void flatMapWithMono() {
         //given
+        var input = Mono.just("java");
+
         //when
-        var mono = service.flatMapWithMono();
+        var mono = service.flatMapWithMono(input);
 
         //then
         StepVerifier
@@ -155,8 +166,10 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void flatMapMany() {
         //given
+        var input = Mono.just("java");
+
         //when
-        var flux = service.flatMapMany();
+        var flux = service.flatMapMany(input);
 
         //then
         StepVerifier
@@ -168,8 +181,10 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void transform() {
         //given
+        var input = Flux.just("alan", "bento");
+
         //when
-        var flux = service.transform();
+        var flux = service.transform(input);
 
         //then
         StepVerifier
@@ -181,8 +196,10 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void ifEmpty() {
         //given
+        var input = Flux.just("alan", "bento");
+
         //when
-        var flux = service.ifEmpty();
+        var flux = service.defaultIfEmpty(input); //crie algum filtro que nao retorna nada
 
         //then
         StepVerifier
@@ -194,8 +211,10 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void switchIfEmpty() {
         //given
+        var input = Flux.just("some", "string");
+
         //when
-        var flux = service.switchIfEmpty();
+        var flux = service.switchIfEmpty(input);
 
         //then
         StepVerifier
@@ -207,8 +226,11 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void concat() {
         //given
+        var abcFlux = Flux.just("A", "B", "C");
+        var defFlux = Flux.just("D", "E", "F");
+
         //when
-        var flux = service.concat();
+        var flux = service.concat(abcFlux, defFlux);
 
         //then
         StepVerifier
@@ -220,8 +242,11 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void concatWith() {
         //given
+        var aMono = Flux.just("A");
+        var bMono = Flux.just("B");
+
         //when
-        var flux = service.concatWith();
+        var flux = service.concatWith(aMono, bMono);
 
         //then
         StepVerifier
@@ -233,8 +258,11 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void merge() {
         //given
+        var abcFlux = Flux.just("A", "B", "C").delayElements(Duration.ofMillis(100));
+        var defFlux = Flux.just("D", "E", "F").delayElements(Duration.ofMillis(125));
+
         //when
-        var flux = service.merge();
+        var flux = service.merge(abcFlux, defFlux);
 
         //then
         StepVerifier
@@ -246,8 +274,11 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void mergeWith() {
         //given
+        var aMono = Mono.just("A");
+        var bMono = Mono.just("B");
+
         //when
-        var flux = service.mergeWith();
+        var flux = service.mergeWith(aMono, bMono);
 
         //then
         StepVerifier
@@ -259,8 +290,11 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void mergeSequential() {
         //given
+        var abcFlux = Flux.just("A", "B", "C").delayElements(Duration.ofMillis(100));
+        var defFlux = Flux.just("D", "E", "F").delayElements(Duration.ofMillis(125));
+
         //when
-        var flux = service.mergeSequential();
+        var flux = service.mergeSequential(abcFlux, defFlux);
 
         //then
         StepVerifier
@@ -272,8 +306,11 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void zip() {
         //given
+        var abcFlux = Flux.just("A", "B", "C");
+        var defFlux = Flux.just("D", "E", "F");
+
         //when
-        var flux = service.zip();
+        var flux = service.zip(abcFlux, defFlux);
 
         //then
         StepVerifier
@@ -285,8 +322,14 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void otherZip() {
         //given
+        var abcFlux = Flux.just("A", "B", "C");
+        var defFlux = Flux.just("D", "E", "F");
+
+        var _123Flux = Flux.just("1", "2", "3");
+        var _456Flux = Flux.just("4", "5", "6");
+
         //when
-        var flux = service.otherZip();
+        var flux = service.usingZipAgain(abcFlux, defFlux, _123Flux, _456Flux);
 
         //then
         StepVerifier
@@ -298,8 +341,11 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void zipWith() {
         //given
+        var abcFlux = Flux.just("A", "B", "C");
+        var defFlux = Flux.just("D", "E", "F");
+
         //when
-        var flux = service.zipWith();
+        var flux = service.zipWith(abcFlux, defFlux);
 
         //then
         StepVerifier
@@ -311,8 +357,11 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void zipWithMono() {
         //given
+        var aMono = Mono.just("A");
+        var bMono = Mono.just("B");
+
         //when
-        var mono = service.zipWithMono();
+        var mono = service.zipWithMono(aMono, bMono);
 
         //then
         StepVerifier
