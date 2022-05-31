@@ -100,6 +100,20 @@ class TodoServiceReactiveApplicationTests {
 	}
 
 	@Test
+	void getByIdNotFound() {
+		//GIVEN
+		String id = "def";
+
+		//WHEN  //THEN
+		webTestClient
+				.get()
+				.uri(URL + "/{id}", id)
+				.exchange()
+				.expectStatus()
+				.isNotFound();
+	}
+
+	@Test
 	void update() {
 		//GIVEN
 		var id = "jose";
@@ -120,6 +134,22 @@ class TodoServiceReactiveApplicationTests {
 					assert actual != null;
 					assertThat(actual).isEqualTo(expected);
 				});
+	}
+
+	@Test
+	void updateNotFound() {
+		//GIVEN
+		var id = "xyz";
+		var updated = UserDocument.builder().name("ze paulo").todos(List.of("Correr")).build();
+
+		//WHEN  //THEN
+		webTestClient
+				.put()
+				.uri(URL + "/{id}", id)
+				.bodyValue(updated)
+				.exchange()
+				.expectStatus()
+				.isNotFound();
 	}
 
 	@Test
