@@ -7,6 +7,8 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class FluxAndMonoGeneratorServiceTest {
 
@@ -63,6 +65,7 @@ class FluxAndMonoGeneratorServiceTest {
     void namesHigherThanFourUsingFilter() {
         //given
         var input = Flux.fromIterable(List.of("alan", "bento", "carlao"));
+
         //when
         var flux = service.namesHigherThanFourUsingFilter(input);
 
@@ -242,8 +245,8 @@ class FluxAndMonoGeneratorServiceTest {
     @Test
     void concatWith() {
         //given
-        var aMono = Flux.just("A");
-        var bMono = Flux.just("B");
+        var aMono = Mono.just("A");
+        var bMono = Mono.just("B");
 
         //when
         var flux = service.concatWith(aMono, bMono);
@@ -262,7 +265,7 @@ class FluxAndMonoGeneratorServiceTest {
         var defFlux = Flux.just("D", "E", "F").delayElements(Duration.ofMillis(125));
 
         //when
-        var flux = service.merge(abcFlux, defFlux);
+        var flux = service.merge(abcFlux, defFlux).log();
 
         //then
         StepVerifier
@@ -369,4 +372,14 @@ class FluxAndMonoGeneratorServiceTest {
                 .expectNext("AB")
                 .verifyComplete();
     }
+
+    @Test
+    void sample() {
+        var lista = Stream.of("alan", "bento")
+                .flatMap(string -> Stream.of(string.split("")))
+                .collect(Collectors.toList());
+
+        System.out.println(lista);
+    }
+
 }
