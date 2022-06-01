@@ -37,15 +37,15 @@ public class FluxAndMonoGeneratorService {
     }
 
     public Flux<String> namesUppercaseUsingMap(final Flux<String> names) {
-        return null;
+        return names.map(String::toUpperCase);
     }
 
     public Flux<String> namesHigherThanFourUsingFilter(final Flux<String> names) {
-        return null;
+        return names.filter(name -> name.length() > 4);
     }
 
     public Flux<String> namesFlatMap(final Flux<String> names) {
-        return null;
+        return names.flatMap(name -> Flux.fromArray(name.split("")));
     }
 
     private Flux<String> splitString(String s) {
@@ -64,11 +64,11 @@ public class FluxAndMonoGeneratorService {
     }
 
     public Flux<String> concatMap(final Flux<String> names) {
-        return null;
+        return names.concatMap(name -> Flux.fromArray(name.split("")));
     }
 
     public Mono<List<String>> flatMapWithMono(Mono<String> input) {
-        return null;
+        return input.flatMap(i -> Mono.just(List.of(i.toUpperCase().split(""))));
     }
 
     private Mono<List<String>> splitStringMono(String s) {
@@ -76,65 +76,69 @@ public class FluxAndMonoGeneratorService {
     }
 
     public Flux<String> flatMapMany(Mono<String> input) {
-        return null;
+        return input.flatMapMany(i -> Flux.fromArray(i.toUpperCase().split("")));
     }
 
     public Flux<String> transform(Flux<String> input) {
-        return null;
+        return
+                input.filter(i -> i.equals("alan"))
+                .map(i -> i.toUpperCase())
+                .transform(flux -> flux.flatMap(f -> Flux.fromArray(f.split(""))));
     }
 
     public Flux<String> defaultIfEmpty(Flux<String> input) {
-        return null;
+        return input.filter(i -> i.length() > 50).defaultIfEmpty("default value");
     }
 
     public Flux<String> switchIfEmpty(Flux<String> input) {
-
-        return null;
+        return input.filter(i -> i.length() > 50)
+                .switchIfEmpty(Flux.just("Alan", "Bento"));
     }
 
     public Flux<String> concat(Flux<String> inputOneFlux, Flux<String> inputTwoFlux) {
 
-        return null;
+        return Flux.concat(inputOneFlux, inputTwoFlux);
     }
 
     public Flux<String> concatWith(Flux<String> aMono, Flux<String> bMono) {
 
-        return null;
+        return aMono.concatWith(bMono);
     }
 
     public Flux<String> merge(Flux<String> abcFlux, Flux<String> defFlux) {
 
-        return null;
+        return Flux.merge(abcFlux,defFlux);
     }
 
     public Flux<String> mergeWith(Mono<String> aMono, Mono<String> bMono) {
 
-        return null;
+        return aMono.mergeWith(bMono);
     }
 
     public Flux<String> mergeSequential(Flux<String> abcFlux, Flux<String> defFlux) {
 
-        return null;
+        return Flux.mergeSequential(abcFlux, defFlux);
     }
 
     public Flux<String> zip(Flux<String> abcFlux, Flux<String> defFlux) {
 
-        return null;
+        return Flux.zip(abcFlux, defFlux, (elemento1, elemento2) -> elemento1 + elemento2);
     }
 
     public Flux<String> usingZipAgain(Flux<String> abcFlux, Flux<String> defFlux, Flux<String> _123Flux,
                                       Flux<String> _456Flux) {
 
-        return null;
+        return Flux.zip(abcFlux, defFlux, _123Flux, _456Flux)
+                .map(tuple -> tuple.getT1() + tuple.getT2() + tuple.getT3() + tuple.getT4())
+                .log();
     }
 
     public Flux<String> zipWith(Flux<String> abcFlux, Flux<String> defFlux) {
-        return null;
+        return abcFlux.zipWith(defFlux, (elementoFlux1, elementoFlux2) -> elementoFlux1 + elementoFlux2);
     }
 
     public Mono<String> zipWithMono(Mono<String> aMono, Mono<String> bMono) {
-
-        return null;
+        return aMono.zipWith(bMono, (mono1, mono2) -> mono1 + mono2);
     }
 
     public static void main(String[] args) {
