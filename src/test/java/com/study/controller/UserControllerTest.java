@@ -35,7 +35,7 @@ class UserControllerTest {
                 User.builder().username("joao").name("joao mario").todos(List.of("Brincar", "Dormir", "Viajar")).build()
         );
 
-        repository.saveAll(users);
+        repository.saveAll(users).blockLast();
     }
 
     @AfterEach
@@ -67,4 +67,23 @@ class UserControllerTest {
     }
 
 
+    @Test
+    void saveUser() {
+        //GIVEN
+        User newUser = User.builder().username("roberta").name("Roberta Rebeca").todos(List.of("Estudar")).build();
+
+        //WHEN //THEN
+        webTestClient
+                .post()
+                .uri(URL)
+                .bodyValue(newUser)
+                .exchange()
+                .expectStatus()
+                .isCreated()
+                .expectBody(User.class)
+                .consumeWith(result -> {
+                    var response = result.getResponseBody();
+                    assertThat(response).isEqualTo(newUser);
+                });
+    }
 }
