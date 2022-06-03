@@ -24,7 +24,7 @@ class TodoServiceReactiveApplicationTests {
 	@Autowired
 	private WebTestClient webTestClient;
 
-	private static final String URL = "/v1/users";
+	private static final String URL = "/users";
 
 	@BeforeEach
 	void setup() {
