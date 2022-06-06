@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.channels.FileChannel;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -42,11 +44,14 @@ public class UserService {
         //.switchIfEmpty(Mono.error(() -> new RuntimeException("Usuario Nao Encontrado")));
 
     }
-//
-//    public Mono<User> insertUser(User user) {
-//        return userRepository.findByUsername(user.username())
-//                .flatMap(__ -> Mono.error(new DuplicateResourceException("User already exists with username [" + user.username() + "]")))
-//                .switchIfEmpty(Mono.defer(() -> userRepository.insertUser(user)))
-//                .cast(User.class);
-//    }
+
+    public Mono<User> update(String username, User user) {
+        return repository
+                .findById(username)
+                .flatMap(entity -> {
+                    entity.setName(user.getName());
+                    entity.setTodos(user.getTodos());
+                    return repository.save(entity);
+                });
+    }
 }

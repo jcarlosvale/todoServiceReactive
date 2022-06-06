@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static reactor.core.publisher.Mono.just;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1")
@@ -37,7 +39,7 @@ public class UserController {
         return service
                 .retrieveById(username)
                 .map(user -> ResponseEntity.status(HttpStatus.OK).body(user))
-                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
+                .switchIfEmpty(just(ResponseEntity.notFound().build()));
     }
 
     @DeleteMapping("/users/{id}")
@@ -50,4 +52,14 @@ public class UserController {
                     else return ResponseEntity.notFound().build();
                 });
     }
+
+    @PutMapping("/users/{id}")
+    public Mono<ResponseEntity<User>> updateUser(@PathVariable(name="id") final String username, @RequestBody final User user) {
+
+        return service
+                .update(username, user)
+                .map(updatedUser -> ResponseEntity.status(HttpStatus.CREATED).body(updatedUser))
+                .switchIfEmpty(just(ResponseEntity.notFound().build()));
+    }
+
 }

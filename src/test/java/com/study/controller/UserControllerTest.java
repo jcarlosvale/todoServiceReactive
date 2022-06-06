@@ -155,4 +155,42 @@ class UserControllerTest {
                 .isNotFound();
     }
 
+    @Test
+    void update() {
+
+        //GIVEN
+        var username = "joao";
+        var expected = User.builder().username("joao").name("jcarlos").todos(List.of("Estudar")).build();
+
+        //WHEN THEN
+        webTestClient
+                .put()
+                .uri(URL + "/{id}", username)
+                .bodyValue(expected)
+                .exchange()
+                .expectStatus()
+                .isCreated()
+                .expectBody(User.class)
+                .consumeWith(entityExchangeResult -> {
+                    var actual = entityExchangeResult.getResponseBody();
+                    assertThat(actual).isEqualTo(expected);
+                });
+    }
+
+    @Test
+    void update_NOTFOUND() {
+
+        //GIVEN
+        var username = "zezim";
+        var emptyValue = User.builder().build();
+
+        //WHEN THEN
+        webTestClient
+                .put()
+                .uri(URL + "/{id}", username)
+                .bodyValue(emptyValue)
+                .exchange()
+                .expectStatus()
+                .isNotFound();
+    }
 }
