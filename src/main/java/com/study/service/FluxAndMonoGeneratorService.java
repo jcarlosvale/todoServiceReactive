@@ -38,11 +38,14 @@ public class FluxAndMonoGeneratorService {
     }
 
     public Flux<String> namesUppercase() {
-        return Flux.fromIterable(List.of("alan", "bento", "carlao"));
+        return Flux.fromIterable(List.of("alan", "bento", "carlao")).map(s -> s.toUpperCase());
     }
 
     public Flux<String> namesUppercaseHigherThanFour() {
-        return Flux.fromIterable(List.of("alan", "bento", "carlao"));
+        return Flux
+                .fromIterable(List.of("alan", "bento", "carlao"))
+                .filter(s -> s.length() > 4)
+                .map(s -> s.toUpperCase());
     }
 
     public Flux<String> namesFlatMap() {
