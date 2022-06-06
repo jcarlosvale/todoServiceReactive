@@ -24,4 +24,21 @@ public class UserService {
 
         return repository.save(user);
     }
+
+    public Mono<User> retrieveById(String userName) {
+
+        return repository.findById(userName);
+    }
+
+    public Mono<Boolean> delete(String username) {
+
+        return
+        repository
+                .findById(username)
+                .flatMap(user -> repository.delete(user).map(aUser ->true));
+               // .switchIfEmpty(Mono.just(false)).log();
+
+        //.switchIfEmpty(Mono.error(() -> new RuntimeException("Usuario Nao Encontrado")));
+
+    }
 }

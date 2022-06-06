@@ -86,4 +86,57 @@ class UserControllerTest {
                     assertThat(response).isEqualTo(newUser);
                 });
     }
+
+    @Test
+    void findById() {
+
+        //GIVEN
+        var username = "maria";
+        var expected = User.builder().username("maria").name("maria luiza").todos(List.of("Acordar", "Estudar")).build();
+
+        //WHEN //THEN
+        webTestClient
+                .get()
+                .uri(URL + "/{id}", username)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(User.class)
+                .consumeWith(entityExchangeResult -> {
+                    var actual = entityExchangeResult.getResponseBody();
+                    assertThat(actual).isEqualTo(expected);
+                });
+    }
+
+    @Test
+    void findById_NotFound() {
+
+        //GIVEN
+        var username = "zezim";
+
+        //WHEN //THEN
+        webTestClient
+                .get()
+                .uri(URL + "/{id}", username)
+                .exchange()
+                .expectStatus()
+                .isNotFound();
+    }
+
+
+    @Test
+    void delete() {
+
+        //GIVEN
+        var username = "maria";
+
+        //WHEN //THEN
+        webTestClient
+                .delete()
+                .uri(URL + "/{id}", username)
+                .exchange()
+                .expectStatus()
+                .isNoContent();
+    }
+
 }
