@@ -139,4 +139,20 @@ class UserControllerTest {
                 .isNoContent();
     }
 
+
+    @Test
+    void delete_NOT_FOUND() {
+
+        //GIVEN
+        var username = "zezim";
+
+        //WHEN //THEN
+        webTestClient
+                .delete()
+                .uri(URL + "/{id}", username)
+                .exchange()
+                .expectStatus()
+                .isNotFound();
+    }
+
 }

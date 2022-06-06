@@ -35,10 +35,18 @@ public class UserService {
         return
         repository
                 .findById(username)
-                .flatMap(user -> repository.delete(user).map(aUser ->true));
-               // .switchIfEmpty(Mono.just(false)).log();
+                .flatMap(user -> repository.delete(user).then(Mono.just(true)))
+                .switchIfEmpty(Mono.just(false));
+
 
         //.switchIfEmpty(Mono.error(() -> new RuntimeException("Usuario Nao Encontrado")));
 
     }
+//
+//    public Mono<User> insertUser(User user) {
+//        return userRepository.findByUsername(user.username())
+//                .flatMap(__ -> Mono.error(new DuplicateResourceException("User already exists with username [" + user.username() + "]")))
+//                .switchIfEmpty(Mono.defer(() -> userRepository.insertUser(user)))
+//                .cast(User.class);
+//    }
 }

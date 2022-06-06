@@ -41,16 +41,13 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deleteUser(@PathVariable(name="id") final String username) {
 
         return service
                 .delete(username)
-                .map(aBoolean -> {
-                    if (aBoolean) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+                .map(isDeleted -> {
+                    if (isDeleted) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
                     else return ResponseEntity.notFound().build();
                 });
     }
-
-
 }
