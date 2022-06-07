@@ -43,7 +43,8 @@ public class UserController {
 
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<ResponseEntity<UserDocument>> updateDocument(@PathVariable final String id, @RequestBody final UserDocument document) {
+    public Mono<ResponseEntity<UserDocument>> updateDocument(@PathVariable final String id,
+                                                             @RequestBody final UserDocument document) {
 
         return this.service.updateUser(id, document)
                 .map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response))

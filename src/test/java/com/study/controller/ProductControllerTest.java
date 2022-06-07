@@ -26,6 +26,8 @@ class ProductControllerTest {
 
     private static final String URL = "/v1/products";
 
+
+
     @BeforeEach
     void setup() {
         var documents =
@@ -83,7 +85,9 @@ class ProductControllerTest {
     void getByName() {
         //GIVEN
         String name = "produto 2";
-        var expected = ProductDocument.builder().name("produto 2").price(3.50).description("description 2").build();
+        var expected = ProductDocument.builder().name("produto 2")
+                .price(3.50)
+                .description("description 2").build();
 
         //WHEN  //THEN
         webTestClient
@@ -117,7 +121,8 @@ class ProductControllerTest {
     void update() {
         //GIVEN
         var name = "produto 3";
-        var expected = ProductDocument.builder().name("produto 3").price(10.50).description("description 3").build();
+        var expected = ProductDocument.builder().name("produto 3")
+                .price(10.50).description("description 3").build();
 
         //WHEN  //THEN
         webTestClient
