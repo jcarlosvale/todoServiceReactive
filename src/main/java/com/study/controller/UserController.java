@@ -18,6 +18,13 @@ public class UserController {
 
     private final UserService service;
 
+    @GetMapping("/helloWorld")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<String> hello() {
+
+        return Mono.just("Hello World");
+    }
+
 
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
