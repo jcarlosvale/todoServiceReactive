@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureWebTestClient
 class UserControllerTest {
 
-    private static final String URL = "/v1/users";
+    private static final String URL = "/users";
 
     @Autowired
     private WebTestClient webTestClient;
