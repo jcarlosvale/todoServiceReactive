@@ -85,7 +85,8 @@ class ProductControllerTest {
     void getByName() {
         //GIVEN
         String name = "produto 2";
-        var expected = ProductDocument.builder().name("produto 2")
+        var expected = ProductDocument.builder()
+                .name("produto 2")
                 .price(3.50)
                 .description("description 2").build();
 

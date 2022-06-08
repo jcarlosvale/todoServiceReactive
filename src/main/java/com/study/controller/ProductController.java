@@ -35,7 +35,7 @@ public class ProductController {
 
         return
                 service.getDocumentById(id)
-                        .map(ProductDocument -> ResponseEntity.status(HttpStatus.OK).body(document))
+                        .map(productDocument -> ResponseEntity.status(HttpStatus.OK).body(productDocument))
                         .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
                         .log();
     }
@@ -51,15 +51,12 @@ public class ProductController {
                 .log();
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/products/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteDocument(@PathVariable final String id) {
 
         return this.service.deleteProduct(id).log();
     }
-
-
-
 }
 
 
