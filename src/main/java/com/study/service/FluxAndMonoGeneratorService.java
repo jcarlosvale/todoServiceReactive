@@ -13,24 +13,24 @@ public class FluxAndMonoGeneratorService {
 
     public Flux<String> namesFlux() {
         return Flux.fromStream(
-          Stream.of(
-                  "Natalia Regina dos Santos Rocha",
-                  "Lorraine Letiele Pires",
-                  "Rebeca Baptista Fonseca Viana",
-                  "Cecilia Andrea Pesce",
-                  "Gabriela dos Santos Silva Paes",
-                  "Ana Carolina Toledo Lobo Maia",
-                  "Jakeline Santana da Rocha",
-                  "Karina Piloupas da Costa",
-                  "Caroline de Souza Cagnin",
-                  "Dayane Sousa Baia",
-                  "Erica Ferreira Cruz Nunes",
-                  "Raquel Souza da Silva",
-                  "Vanessa Correa de Oliveira Kodama",
-                  "Luana Barbosa Bento Ferreira",
-                  "Hellen Caldas Rios",
-                  "Gabriella Lemos da Silva Vaz",
-                  "Rafaela Santana Alves")).log();
+                Stream.of(
+                        "Natalia Regina dos Santos Rocha",
+                        "Lorraine Letiele Pires",
+                        "Rebeca Baptista Fonseca Viana",
+                        "Cecilia Andrea Pesce",
+                        "Gabriela dos Santos Silva Paes",
+                        "Ana Carolina Toledo Lobo Maia",
+                        "Jakeline Santana da Rocha",
+                        "Karina Piloupas da Costa",
+                        "Caroline de Souza Cagnin",
+                        "Dayane Sousa Baia",
+                        "Erica Ferreira Cruz Nunes",
+                        "Raquel Souza da Silva",
+                        "Vanessa Correa de Oliveira Kodama",
+                        "Luana Barbosa Bento Ferreira",
+                        "Hellen Caldas Rios",
+                        "Gabriella Lemos da Silva Vaz",
+                        "Rafaela Santana Alves")).log();
     }
 
     public Mono<String> namesMono() {

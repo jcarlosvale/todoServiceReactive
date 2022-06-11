@@ -33,13 +33,13 @@ public class UserHandler {
 
         return userFromDatabase
                 .flatMap(userDocument -> serverRequest.bodyToMono(UserDocument.class)
-                                .map(userFromBody -> {
-                                    userDocument.setName(userFromBody.getName());
-                                    userDocument.setTodos(userFromBody.getTodos());
-                                    return userDocument;
-                                })
-                                .flatMap(repository::save)
-                                .flatMap(savedUser -> ServerResponse.status(HttpStatus.CREATED).bodyValue(savedUser))
+                        .map(userFromBody -> {
+                            userDocument.setName(userFromBody.getName());
+                            userDocument.setTodos(userFromBody.getTodos());
+                            return userDocument;
+                        })
+                        .flatMap(repository::save)
+                        .flatMap(savedUser -> ServerResponse.status(HttpStatus.CREATED).bodyValue(savedUser))
                 );
     }
 

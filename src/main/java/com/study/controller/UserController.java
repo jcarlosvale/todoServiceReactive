@@ -57,6 +57,4 @@ public class UserController {
 
         return this.service.deleteUser(id).log();
     }
-
-
 }
