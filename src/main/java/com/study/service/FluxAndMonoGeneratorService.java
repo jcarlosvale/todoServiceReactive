@@ -52,21 +52,15 @@ public class FluxAndMonoGeneratorService {
     }
 
     public Flux<String> namesUppercaseUsingMap(Flux<String> input) {
-        return input
-                .map(String::toUpperCase)
-                .log();
+        return null;
     }
 
     public Flux<String> namesHigherThanSomeSizeUsingFilter(Flux<String> input, int size) {
-        return input
-                .filter(s -> s.length() > size)
-                .log();
+        return null;
     }
 
     public Flux<String> charactersFromNames(Flux<String> input) {
-        return input
-                .flatMap(s -> Flux.fromArray(s.split("")))
-                .log();
+        return null;
     }
 
     public Flux<String> charactersFromNamesAsync(Flux<String> input) {
@@ -84,30 +78,20 @@ public class FluxAndMonoGeneratorService {
     }
 
     public Flux<String> charactersFromNamesAsyncWithConcatMap(Flux<String> input) {
-        return input
-                .concatMap(this::splitWithSomeDelay)
-                .doOnNext(System.out::println)
-                .log();
+        return null;
     }
 
     public Mono<List<String>> charactersFromName(Mono<String> input) {
-        return input
-                .flatMap(s -> Mono.just(List.of(s.split(""))))
-                .log();
+        return null;
     }
 
     public Flux<String> charactersFromNameWithFlatMapMany(Mono<String> input) {
-        return input
-                .flatMapMany(s -> Flux.fromArray(s.split("")))
-                .log();
+        return null;
     }
 
     public Flux<String> transformNamesWithSizeHigherThan(Flux<String> input, int size) {
-        Function<Flux<String>, Flux<String>> function =
-                stringFlux ->
-                        stringFlux
-                                .filter(s -> s.length() > size)
-                                .map(String::toUpperCase);
+        //FIXME: implemente a função abaixo
+        Function<Flux<String>, Flux<String>> function = null;
         return input
                 .transform(function)
                 .flatMap(s -> Flux.fromArray(s.split("")))
@@ -115,64 +99,51 @@ public class FluxAndMonoGeneratorService {
     }
 
     public Flux<String> defaultNameIfEmptyWithSizeHigherThan(Flux<String> input, int size) {
-        return
-                input
-                        .filter(s -> s.length() > size)
-                        .defaultIfEmpty("default")
-                        .log();
+        return null;
     }
 
     public Flux<String> switchIfEmptyWithSizeHigherThan(Flux<String> input, int size) {
-        return
-                input
-                        .filter(s -> s.length() > size)
-                        .switchIfEmpty(Flux.just("default", "value"))
-                        .log();
+        return null;
     }
 
     public Flux<String> concat(Flux<String> inputOne, Flux<String> inputTwo) {
-        return Flux
-                .concat(inputOne, inputTwo)
-                .log();
+        return null;
     }
 
     public Flux<String> concatWith(Mono<String> inputOne, Flux<String> inputTwo) {
-        return inputOne
-                .concatWith(inputTwo)
-                .log();
+        return null;
     }
 
     public Flux<String> merge(Flux<String> inputOne, Flux<String> inputTwo) {
         var fluxA = inputOne.delayElements(Duration.ofMillis(100));
         var fluxB = inputTwo.delayElements(Duration.ofMillis(125));
 
-        return Flux.merge(fluxA, fluxB).log();
+        //FIXME merge fluxA e fluxB
+        return null;
     }
 
     public Flux<String> mergeWith(Flux<String> inputOne, Flux<String> inputTwo) {
         var fluxA = inputOne.delayElements(Duration.ofMillis(100));
         var fluxB = inputTwo.delayElements(Duration.ofMillis(125));
 
-        return fluxA.mergeWith(fluxB).log();
+        //FIXME merge fluxA e fluxB
+        return null;
     }
 
     public Flux<String> mergeSequential(Flux<String> inputOne, Flux<String> inputTwo) {
         var fluxA = inputOne.delayElements(Duration.ofMillis(100));
         var fluxB = inputTwo.delayElements(Duration.ofMillis(125));
 
-        return Flux.mergeSequential(fluxA, fluxB).log();
+        //FIXME merge fluxA e fluxB
+        return null;
     }
 
     public Flux<String> zipStreams(Flux<String> inputOne, Flux<String> inputTwo) {
-        return Flux
-                .zip(inputOne, inputTwo, (s, s2) -> s + s2)
-                .log();
+        return null;
     }
 
     public Flux<String> zipWithStreams(Flux<String> inputOne, Flux<String> inputTwo) {
-        return inputOne
-                .zipWith(inputTwo, (s, s2) -> s + s2)
-                .log();
+        return null;
     }
 
     public Flux<String> zip4Streams(Flux<String> inputOne, Flux<String> inputTwo, Flux<String> inputThree, Flux<String> inputFour) {
