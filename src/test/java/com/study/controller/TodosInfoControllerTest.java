@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -85,6 +86,23 @@ class TodosInfoControllerTest {
                 .is2xxSuccessful()
                 .expectBodyList(TodoInfo.class)
                 .hasSize(3);
+    }
+
+    @Test
+    void getByDate() {
+
+        var uri = UriComponentsBuilder.fromUriString(TODO_INFOS_URL)
+                        .queryParam("date", LocalDate.parse("2020-06-11"))
+                                .buildAndExpand().toUri();
+
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .expectBodyList(TodoInfo.class)
+                .hasSize(1);
     }
 
     @Test
