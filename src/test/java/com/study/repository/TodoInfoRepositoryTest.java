@@ -58,6 +58,20 @@ class TodoInfoRepositoryTest {
     }
 
     @Test
+    void findByDate() {
+        //given
+        var date = LocalDate.parse("2020-06-11");
+
+        //when
+        var todosInfo = todoInfoRepository.findByTodoDate(date);
+
+        //then
+        StepVerifier.create(todosInfo)
+                .expectNextCount(1)
+                .verifyComplete();
+    }
+
+    @Test
     void findById() {
         //given
 
