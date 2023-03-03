@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/todoinfos")
@@ -26,7 +28,7 @@ public class TodosInfoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<TodoInfo> save(@RequestBody TodoInfo todoInfo) {
+    public Mono<TodoInfo> save(@RequestBody @Valid TodoInfo todoInfo) {
         return todoInfoService.addTodoInfo(todoInfo).log();
     }
 

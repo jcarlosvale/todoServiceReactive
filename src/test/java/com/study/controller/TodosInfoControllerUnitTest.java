@@ -102,6 +102,28 @@ class TodosInfoControllerUnitTest {
     }
 
     @Test
+    void saveWithValidation() {
+        //given
+        var newTodo = new TodoInfo("mockId", "", LocalDate.parse("2012-07-20"));
+
+        //when
+        webTestClient
+                .post()
+                .uri(TODO_INFOS_URL)
+                .bodyValue(newTodo)
+                .exchange()
+                .expectStatus()
+                .isBadRequest()
+                .expectBody(String.class)
+                .consumeWith(stringEntityExchangeResult -> {
+                    var responseBody = stringEntityExchangeResult.getResponseBody();
+                    assertEquals("description must be present", responseBody);
+                });
+
+        //then
+    }
+
+    @Test
     void update() {
         //given
         var id = "abc";
