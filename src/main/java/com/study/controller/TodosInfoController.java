@@ -54,6 +54,11 @@ public class TodosInfoController {
         return todoInfoService.getTodoInfoById(id).log();
     }
 
+    @GetMapping("/activity")
+    public Mono<TodoInfo> getActivity() {
+        return todoInfoService.getActivity().log();
+    }
+
     @PutMapping("/{id}")
     public Mono<ResponseEntity<TodoInfo>> update(@RequestBody TodoInfo updatedTodoInfo, @PathVariable String id) {
         return todoInfoService.updateTodoInfo(updatedTodoInfo, id)

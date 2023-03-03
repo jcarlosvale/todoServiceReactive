@@ -1,5 +1,6 @@
 package com.study.service;
 
+import com.study.client.BoredApiRestClient;
 import com.study.domain.TodoInfo;
 import com.study.repository.TodoInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,8 @@ import java.time.LocalDate;
 public class TodoInfoService {
 
     private final TodoInfoRepository todoInfoRepository;
+
+    private final BoredApiRestClient boredApiRestClient;
 
     public Mono<TodoInfo> addTodoInfo(TodoInfo todoInfo) {
         return todoInfoRepository.save(todoInfo);
@@ -45,5 +48,11 @@ public class TodoInfoService {
 
     public Flux<TodoInfo> getByDate(LocalDate date) {
         return todoInfoRepository.findByTodoDate(date);
+    }
+
+    public Mono<TodoInfo> getActivity() {
+        return boredApiRestClient.retrieveTodo()
+                .map(activityDto -> new TodoInfo(null, activityDto.getDescription(), LocalDate.now()))
+                .log();
     }
 }
