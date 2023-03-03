@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class TodoInfoService {
@@ -39,5 +41,9 @@ public class TodoInfoService {
 
     public Mono<Void> deleteTodoInfo(String id) {
         return todoInfoRepository.deleteById(id);
+    }
+
+    public Flux<TodoInfo> getByDate(LocalDate date) {
+        return todoInfoRepository.findByTodoDate(date);
     }
 }
