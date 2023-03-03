@@ -5,6 +5,7 @@ import com.study.domain.TodoInfo;
 import com.study.service.TodoInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,8 +44,11 @@ public class TodosInfoController {
     }
 
     @PutMapping("/{id}")
-    public Mono<TodoInfo> update(@RequestBody TodoInfo updatedTodoInfo, @PathVariable String id) {
-        return todoInfoService.updateTodoInfo(updatedTodoInfo, id).log();
+    public Mono<ResponseEntity<TodoInfo>> update(@RequestBody TodoInfo updatedTodoInfo, @PathVariable String id) {
+        return todoInfoService.updateTodoInfo(updatedTodoInfo, id)
+                .map(movieInfo -> ResponseEntity.ok().body(movieInfo))
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()))
+                .log();
     }
 
     @DeleteMapping("/{id}")

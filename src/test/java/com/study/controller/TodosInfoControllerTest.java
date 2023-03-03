@@ -145,6 +145,24 @@ class TodosInfoControllerTest {
     }
 
     @Test
+    void updateNotFound() {
+        //given
+        var id = "xyz";
+        var updateTodo = new TodoInfo(null, "Homework 1", LocalDate.parse("2008-07-18"));
+
+        //when
+        webTestClient
+                .put()
+                .uri(TODO_INFOS_URL + "/{id}", id)
+                .bodyValue(updateTodo)
+                .exchange()
+                .expectStatus()
+                .isNotFound();
+
+        //then
+    }
+
+    @Test
     void delete() {
         //given
         var id = "abc";
