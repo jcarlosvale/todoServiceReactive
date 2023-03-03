@@ -1,6 +1,7 @@
 package com.study.router;
 
 import com.study.domain.TodoInfo;
+import com.study.exceptionhandler.GlobalErrorHandler;
 import com.study.handler.TodoHandler;
 import com.study.repository.TodoInfoRepository;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @WebFluxTest
-@ContextConfiguration(classes = {TodoRouter.class, TodoHandler.class})
+@ContextConfiguration(classes = {TodoRouter.class, TodoHandler.class, GlobalErrorHandler.class})
 @AutoConfigureWebTestClient
 class TodoRouterUnitTest {
 
@@ -53,5 +54,25 @@ class TodoRouterUnitTest {
                     assertNotNull(saved);
                     assertNotNull(saved.getTodoInfoId());
                 });
+    }
+
+    @Test
+    void saveValidation() {
+        //given
+        var newTodo = new TodoInfo(null, "", LocalDate.parse("2008-07-18"));
+
+        when(repository.save(newTodo))
+                .thenReturn(Mono.just(new TodoInfo("abc", "Homework 1", LocalDate.parse("2008-07-18"))));
+
+        //when
+        webTestClient
+                .post()
+                .uri(URL)
+                .bodyValue(newTodo)
+                .exchange()
+                .expectStatus()
+                .isBadRequest()
+                .expectBody(String.class)
+                .isEqualTo("description must be present");
     }
 }
