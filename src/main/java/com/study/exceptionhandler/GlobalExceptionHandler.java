@@ -24,6 +24,11 @@ public class GlobalExceptionHandler {
                     .collect(Collectors.joining(","));
         log.error("Error is: {}", error);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
 
+    @ExceptionHandler(BoredApiClientException.class)
+    public ResponseEntity<String> handleBoredApiClientException(BoredApiClientException exception) {
+        log.error("Exception Caught in handleBoredApiClientException : {}", exception.getMessage());
+        return ResponseEntity.status(exception.getStatusCode()).body(exception.getMessage());
     }
 }
