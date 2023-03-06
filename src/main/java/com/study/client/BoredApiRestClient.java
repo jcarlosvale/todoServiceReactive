@@ -4,6 +4,7 @@ import com.study.dto.ActivityDto;
 import com.study.exceptionhandler.BoredApiClientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,14 +15,16 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class BoredApiRestClient {
 
-    private final String url = "https://www.boredapi.com/api/activity";
+    @Value("${boredApiBaseUrl}")
+    private String baseUrl;
+    private final String path = "/api/activity";
 
     private final WebClient webClient;
 
     public Mono<ActivityDto> retrieveTodo() {
         return webClient
                 .get()
-                .uri(url)
+                .uri(baseUrl + path)
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> {
                     var statusCode = clientResponse.statusCode().value();
