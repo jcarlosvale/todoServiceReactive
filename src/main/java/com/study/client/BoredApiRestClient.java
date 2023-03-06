@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
+
+import java.time.Duration;
 
 @Component
 @Slf4j
@@ -45,7 +48,8 @@ public class BoredApiRestClient {
                     return Mono.error(new BoredApiClientException("Server Exception in BoredApi ", statusCode));
                 })
                 .bodyToMono(ActivityDto.class)
-                .retry(3)
+               // .retry(3)
+                .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(1)))
                 .log();
     }
 

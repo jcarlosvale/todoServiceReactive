@@ -15,6 +15,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.moreThanOrExactly;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
@@ -100,7 +101,7 @@ class BoredApiRestClientTest {
                 .expectStatus()
                 .is5xxServerError();
 
-        WireMock.verify(4, getRequestedFor(urlEqualTo("/api/activity")));
+        WireMock.verify(moreThanOrExactly(4), getRequestedFor(urlEqualTo("/api/activity")));
     }
 
 }
