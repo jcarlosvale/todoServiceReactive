@@ -42,12 +42,10 @@ public class BoredApiRestClient {
                     var statusCode = clientResponse.statusCode().value();
                     log.info("Status code is : {}", statusCode);
 
-                    return clientResponse.bodyToMono(String.class)
-                            .flatMap(responseMessage ->
-                                    Mono.error(new BoredApiClientException("Server Exception in BoredApi " + responseMessage,
-                                            statusCode)));
+                    return Mono.error(new BoredApiClientException("Server Exception in BoredApi ", statusCode));
                 })
                 .bodyToMono(ActivityDto.class)
+                .retry(3)
                 .log();
     }
 

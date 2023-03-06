@@ -1,5 +1,6 @@
 package com.study.client;
 
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.study.domain.TodoInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,12 +14,13 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-//@TestPropertySource(properties = "spring.mongodb.embedded.version=3.5.5")  //new versions of Mongo broken the Embedded
-@AutoConfigureWebTestClient
+@AutoConfigureWebTestClient(timeout = "36000")
 @AutoConfigureWireMock(port = 8084)
 @TestPropertySource(
         properties = {
@@ -79,6 +81,26 @@ class BoredApiRestClientTest {
                 .exchange()
                 .expectStatus()
                 .is4xxClientError();
+    }
+
+    @Test
+    void retrieveActivityUnavailable() {
+        //given
+        stubFor(
+                get("/api/activity")
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(500)));
+
+        //when
+        webTestClient
+                .get()
+                .uri("/v1/todoinfos/activity")
+                .exchange()
+                .expectStatus()
+                .is5xxServerError();
+
+        WireMock.verify(4, getRequestedFor(urlEqualTo("/api/activity")));
     }
 
 }
